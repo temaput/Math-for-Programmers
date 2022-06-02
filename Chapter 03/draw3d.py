@@ -70,7 +70,7 @@ def extract_vectors_3D(objects):
 
 def draw3d(*objects, origin=True, axes=True, width=6, save_as=None, azim=None, elev=None, xlim=None, ylim=None, zlim=None, xticks=None, yticks=None, zticks=None,depthshade=False):
 
-    fig = plt.gcf()
+    fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.view_init(elev=elev,azim=azim)
     

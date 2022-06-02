@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import xlim, ylim
 
+
 blue = 'C0'
 black = 'k'
 red = 'C3'
