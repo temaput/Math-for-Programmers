@@ -78,4 +78,4 @@ while True:
     glEnd()
     pygame.display.flip()
 
-    print(clock.get_fps())
+    print(milliseconds)

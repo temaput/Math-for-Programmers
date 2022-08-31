@@ -55,6 +55,8 @@ def extract_vectors_2d(objects):
 def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
             width=6, save_as=None):
 
+    fig, ax = plt.subplots()
+
     all_vectors = list(extract_vectors_2d(objects))
     xs, ys = zip(*all_vectors)
 
@@ -71,29 +73,29 @@ def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
         def round_down_to_multiple(val,size):
             return -floor((-val - size) / size) * size
 
-        plt.xlim(floor((min_x - x_padding) / grid[0]) * grid[0],
+        ax.set_xlim(floor((min_x - x_padding) / grid[0]) * grid[0],
                 ceil((max_x + x_padding) / grid[0]) * grid[0])
-        plt.ylim(floor((min_y - y_padding) / grid[1]) * grid[1],
+        ax.set_ylim(floor((min_y - y_padding) / grid[1]) * grid[1],
                 ceil((max_y + y_padding) / grid[1]) * grid[1])
     else:
         x_padding = 0.05 * (max_x-min_x)
         y_padding = 0.05 * (max_y-min_y)
 
-        plt.xlim(min_x-x_padding,max_x+x_padding)
-        plt.ylim(min_y-y_padding,max_y+y_padding)
+        ax.set_xlim(min_x-x_padding,max_x+x_padding)
+        ax.set_ylim(min_y-y_padding,max_y+y_padding)
 
     if origin:
-        plt.scatter([0],[0], color='k', marker='x')
+        ax.scatter([0],[0], color='k', marker='x')
 
     if grid:
-        plt.gca().set_xticks(np.arange(plt.xlim()[0],plt.xlim()[1],grid[0]))
-        plt.gca().set_yticks(np.arange(plt.ylim()[0],plt.ylim()[1],grid[1]))
-        plt.grid(True)
-        plt.gca().set_axisbelow(True)
+        ax.set_xticks(np.arange(plt.xlim()[0],plt.xlim()[1],grid[0]))
+        ax.set_yticks(np.arange(plt.ylim()[0],plt.ylim()[1],grid[1]))
+        ax.grid(True)
+        ax.set_axisbelow(True)
 
     if axes:
-        plt.gca().axhline(linewidth=2, color='k')
-        plt.gca().axvline(linewidth=2, color='k')
+        ax.axhline(linewidth=2, color='k')
+        ax.axvline(linewidth=2, color='k')
 
     for object in objects:
         if type(object) == Polygon2D:
@@ -101,17 +103,17 @@ def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
                 for i in range(0,len(object.vertices)):
                     x1, y1 = object.vertices[i]
                     x2, y2 = object.vertices[(i+1)%len(object.vertices)]
-                    plt.plot([x1,x2],[y1,y2], color=object.color)
+                    ax.plot([x1,x2],[y1,y2], color=object.color)
             if object.fill:
                 patches = []
                 poly = Polygon(object.vertices, True)
                 patches.append(poly)
                 p = PatchCollection(patches, color=object.fill)
-                plt.gca().add_collection(p)
+                ax.add_collection(p)
         elif type(object) == Points2D:
             xs = [v[0] for v in object.vectors]
             ys = [v[1] for v in object.vectors]
-            plt.scatter(xs,ys,color=object.color)
+            ax.scatter(xs,ys,color=object.color)
         elif type(object) == Arrow2D:
             tip, tail = object.tip, object.tail
             tip_length = (xlim()[1] - xlim()[0]) / 20.
@@ -119,17 +121,17 @@ def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
             new_length = length - tip_length
             new_y = (tip[1] - tail[1]) * (new_length / length)
             new_x = (tip[0] - tail[0]) * (new_length / length)
-            plt.gca().arrow(tail[0], tail[1], new_x, new_y,
+            ax.arrow(tail[0], tail[1], new_x, new_y,
             head_width=tip_length/1.5, head_length=tip_length,
             fc=object.color, ec=object.color)
         elif type(object) == Segment2D:
             x1, y1 = object.start_point
             x2, y2 = object.end_point
-            plt.plot([x1,x2],[y1,y2], color=object.color)
+            ax.plot([x1,x2],[y1,y2], color=object.color)
         else:
             raise TypeError("Unrecognized object: {}".format(object))
 
-    fig = matplotlib.pyplot.gcf()
+    # fig = matplotlib.pyplot.gcf()
 
     if nice_aspect_ratio:
         coords_height = (ylim()[1] - ylim()[0])

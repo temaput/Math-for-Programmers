@@ -15,7 +15,7 @@ blues = matplotlib.cm.get_cmap('Blues')
 def shade(face,color_map=blues,light=(1,2,3)):
     return color_map(1 - dot(unit(normal(face)), unit(light)))
 
-light = (1,2,3)
+light = (10,10,10)
 faces = [
     [(1,0,0), (0,1,0), (0,0,1)],
     [(1,0,0), (0,0,-1), (0,1,0)],
@@ -55,4 +55,4 @@ while True:
             glVertex3fv(vertex) 
     glEnd()
     pygame.display.flip() 
-    print(clock.get_fps())
+    # print(clock.get_fps())
