@@ -11,7 +11,7 @@ def translate1left(v):
 original_triangles = load_triangles()
 
 scaled_translated_triangles = [
-    [translate1left(scale2(vertex)) for vertex in triangle]
+    [translate1left(vertex) for vertex in triangle]
     for triangle in original_triangles
 ]
 
