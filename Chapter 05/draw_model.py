@@ -7,9 +7,13 @@ import camera
 from vectors import *
 from math import *
 from transforms import *
+import sys
 
 def normal(face):
     return(cross(subtract(face[1], face[0]), subtract(face[2], face[0])))
+
+def quit():
+    sys.exit()
 
 blues = matplotlib.cm.get_cmap('Blues')
 
